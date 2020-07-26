@@ -63,8 +63,9 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print('search.csv save in path: ' + os.path.join(UPLOAD_FOLDER,
-                               filename))
+            print(datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S") + 'search.csv save in path: ' + os.path.join(UPLOAD_FOLDER,
+                                                                                  filename))
             file.save(os.path.join(UPLOAD_FOLDER,
                                    filename))
             return "OK"
