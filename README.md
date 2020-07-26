@@ -24,7 +24,6 @@ source env/bin/activate
 cd YOUR_PROJECT
 pip install  -r requirements.txt
 
-gcloud app create
+python3 main.py
 
-gcloud app deploy app.yaml \
-    --project scrapy-pchome
+gcloud app deploy app.yaml --project pchome-scrapy
