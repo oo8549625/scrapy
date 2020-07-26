@@ -14,3 +14,10 @@ $ heroku logs --tail
 $ heroku ps:scale web=1 worker=1
 
 $ heroku ps
+
+
+## GCP app engine guide
+
+$ gcloud app regions list
+
+$ gcloud app create --project=pchome-scrapy --region=asia-east2
