@@ -120,6 +120,10 @@ if __name__ == '__main__':
     handler = logging.FileHandler(filename=os.path.join(os.environ.get('LOG_DIR'), 'flask.log'))
     app.logger.addHandler(handler)
 
+    gunicorn_logger = logging.getLogger('gunicorn.info')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
+
     scheduler = APScheduler()
     # it is also possible to enable the API directly
     # scheduler.api_enabled = True
