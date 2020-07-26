@@ -12,44 +12,46 @@ import logging
 
 UPLOAD_FOLDER = os.path.dirname(__file__)
 ALLOWED_EXTENSIONS = set(['csv'])
-#os.environ.get('LOG_DIR')
-#os.path.dirname(__file__)
+# os.environ.get('LOG_DIR')
+# os.path.dirname(__file__)
 app = Flask(__name__)
-logging.basicConfig(filename=os.path.join(os.path.dirname(__file__), 'flask.log'), level=logging.INFO)
+logging.basicConfig(filename=os.path.join(
+    os.path.dirname(__file__), 'flask.log'), level=logging.INFO)
+
 
 def search_price():
-    with open('search.csv', newline = '') as csvfile:
+    with open('search.csv', newline='') as csvfile:
         # 讀取 CSV 檔案內容
-        rows=csv.reader(csvfile)
+        rows = csv.reader(csvfile)
         next(rows)
-        prods={}
+        prods = {}
         # 以迴圈輸出每一列
         app.logger.info(datetime.now().strftime(
             "%Y-%m-%d %H:%M:%S") + ' searching prod price')
         for row in rows:
             if row[1]:
                 if scrapy.search_prods(row[0], row[1]):
-                    prods[row[0]]=scrapy.search_prods(row[0], row[1])
+                    prods[row[0]] = scrapy.search_prods(row[0], row[1])
                     prod = prods[row[0]]
                     app.logger.info(datetime.now().strftime(
-                        "%Y-%m-%d %H:%M:%S") + 'prod: ' + row[0] + ',\tprice: ' + prod['price'] + ',\tlowestPrice: ' +  prod['lowestPrice'])
+                        "%Y-%m-%d %H:%M:%S") + 'prod: ' + row[0] + ',\tprice: ' + prod['price'] + ',\tlowestPrice: ' + prod['lowestPrice'])
 
-        workbook=openpyxl.Workbook()
-        sheet=workbook.active
-        sheet['A1']='型號'
-        sheet['B1']='牌價'
-        sheet['C1']='最低價'
-        sheet['D1']='URL'
-        sheet['E1']='搜尋日期'
+        workbook = openpyxl.Workbook()
+        sheet = workbook.active
+        sheet['A1'] = '型號'
+        sheet['B1'] = '牌價'
+        sheet['C1'] = '最低價'
+        sheet['D1'] = 'URL'
+        sheet['E1'] = '搜尋日期'
 
-        count=1
+        count = 1
         app.logger.info(datetime.now().strftime(
             "%Y-%m-%d %H:%M:%S") + ' writing to xlsm file')
         for prod in prods:
             count += 1
-            sheet['A' + str(count)]=prod
-            sheet['B' + str(count)]=prods[prod]['price']
-            sheet['C' + str(count)]=prods[prod]['lowestPrice']
+            sheet['A' + str(count)] = prod
+            sheet['B' + str(count)] = prods[prod]['price']
+            sheet['C' + str(count)] = prods[prod]['lowestPrice']
             sheet['D' + str(count)
                   ] = 'https://ecshweb.pchome.com.tw/search/v3.3/?q={}'.format(prod)
             sheet['E' + str(count)] = prods[prod]['date']
@@ -88,7 +90,7 @@ def upload_file():
 
 
 class Config(object):
-    JOBS=[
+    JOBS = [
         {
             'id': 'job1',
             'func': search_price,
@@ -111,7 +113,7 @@ class Config(object):
             'args': '',
             'trigger': 'cron',
             'hour': '22',
-            'minute': '22',
+            'minute': '26',
         }
     ]
 
@@ -128,7 +130,8 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
-if __name__ == '__main__':    app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 if __name__ != '__main__':
     gunicorn_logger = logging.getLogger('gunicorn.info')
