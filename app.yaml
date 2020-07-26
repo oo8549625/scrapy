@@ -1,4 +1,3 @@
-service: default
 runtime: python
 env: flex
 entrypoint: gunicorn main:app  
