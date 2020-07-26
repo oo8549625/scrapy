@@ -63,7 +63,9 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'],
+            print('search.csv save in path: ' + os.path.join(UPLOAD_FOLDER,
+                               filename))
+            file.save(os.path.join(UPLOAD_FOLDER,
                                    filename))
             return "OK"
     # GET return
@@ -102,7 +104,7 @@ class Config(object):
             'args': '',
             'trigger': 'cron',
             'hour': '19',
-            'minute': '10',
+            'minute': '30',
         }
     ]
 

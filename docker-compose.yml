@@ -1,13 +1,14 @@
 version: '3'
 
 services:
-  flask:
+  scrapy:
     build: .
-    image: flask
+    image: scrapy
     restart: always
     network_mode: host
-    container_name: flask
+    container_name: scrapy
     environment:
+      TZ: Asia/Taipei
       GMAIL_USER: a0970366492@gmail.com
       GMAIL_PASSWORD: abcdefg
     ports:
