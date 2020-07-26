@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  flask:
+    build: .
+    image: flask
+    restart: always
+    network_mode: host
+    container_name: flask
+    environment:
+      GMAIL_USER: a0970366492@gmail.com
+      GMAIL_PASSWORD: abcdefg
+    ports:
+      - '5000:5000'

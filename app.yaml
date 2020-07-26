@@ -1,8 +1,0 @@
-runtime: python
-env: flex
-entrypoint: gunicorn main:app  
-runtime_config:
-  python_version: 3
-env_variables:
-  GMAIL_USER: 'a0970366492@gmail.com'
-  GMAIL_PASSWORD: '123456789'
