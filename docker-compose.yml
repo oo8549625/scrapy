@@ -10,6 +10,6 @@ services:
     environment:
       TZ: Asia/Taipei
       GMAIL_USER: a0970366492@gmail.com
-      GMAIL_PASSWORD: abcdefg
+      GMAIL_PASSWORD: 
     ports:
       - '5000:5000'
