@@ -23,12 +23,14 @@ def search_price():
         next(rows)
         prods = {}
         # 以迴圈輸出每一列
-        app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' searching prod price')
+        app.logger.info(datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S") + ' searching prod price')
         for row in rows:
             if row[1]:
                 if scrapy.search_prods(row[0], row[1]):
                     prods[row[0]] = scrapy.search_prods(row[0], row[1])
-                    app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + 'prod: ' + row[0] + '=\t' + prods[row[0]])
+                    app.logger.info(datetime.now().strftime(
+                        "%Y-%m-%d %H:%M:%S") + 'prod: ' + row[0] + '=\t' + prods[row[0]])
 
         workbook = openpyxl.Workbook()
         sheet = workbook.active
@@ -39,7 +41,8 @@ def search_price():
         sheet['E1'] = '搜尋日期'
 
         count = 1
-        app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' writing to xlsm file')
+        app.logger.info(datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S") + ' writing to xlsm file')
         for prod in prods:
             count += 1
             sheet['A' + str(count)] = prod
@@ -50,7 +53,8 @@ def search_price():
             sheet['E' + str(count)] = prods[prod][date]
 
         workbook.save('result.xlsx')
-        app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' sending email')
+        app.logger.info(datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S") + ' sending email')
         smtp.send_email()
 
 
@@ -64,7 +68,8 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' search.csv save in path: ' + os.path.join(UPLOAD_FOLDER, filename))
+            app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") +
+                            ' search.csv save in path: ' + os.path.join(UPLOAD_FOLDER, filename))
             file.save(os.path.join(UPLOAD_FOLDER,
                                    filename))
             return "OK"
@@ -111,23 +116,26 @@ class Config(object):
     SCHEDULER_API_ENABLED = True
 
 
-if __name__ == '__main__':
-    app.config.from_object(Config())
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
-    
-    app.debug = True
-    handler = logging.FileHandler(filename=os.path.join(os.environ.get('LOG_DIR'), 'flask.log'))
-    app.logger.addHandler(handler)
+app.config.from_object(Config())
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
 
+app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") +
+                ' logs save in path: ' + os.path.join(os.environ.get('LOG_DIR'), 'flask.log'))
+handler = logging.FileHandler(filename=os.path.join(
+    os.environ.get('LOG_DIR'), 'flask.log'))
+app.logger.addHandler(handler)
+
+scheduler = APScheduler()
+# it is also possible to enable the API directly
+# scheduler.api_enabled = True
+scheduler.init_app(app)
+scheduler.start()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
+if __name__ != '__main__':
     gunicorn_logger = logging.getLogger('gunicorn.info')
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
-
-    scheduler = APScheduler()
-    # it is also possible to enable the API directly
-    # scheduler.api_enabled = True
-    scheduler.init_app(app)
-    scheduler.start()
-
-    app.run()
