@@ -8,6 +8,7 @@ import smtp
 import scrapy
 import openpyxl
 import csv
+import logging
 
 UPLOAD_FOLDER = os.path.dirname(__file__)
 ALLOWED_EXTENSIONS = set(['csv'])
@@ -22,12 +23,12 @@ def search_price():
         next(rows)
         prods = {}
         # 以迴圈輸出每一列
-        print(datetime.now().strftime(
-            "%Y-%m-%d %H:%M:%S") + ' searching prod price')
+        app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' searching prod price')
         for row in rows:
             if row[1]:
                 if scrapy.search_prods(row[0], row[1]):
                     prods[row[0]] = scrapy.search_prods(row[0], row[1])
+                    app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + 'prod: ' + row[0] + '=\t' + prods[row[0]])
 
         workbook = openpyxl.Workbook()
         sheet = workbook.active
@@ -38,8 +39,7 @@ def search_price():
         sheet['E1'] = '搜尋日期'
 
         count = 1
-        print(datetime.now().strftime(
-            "%Y-%m-%d %H:%M:%S") + ' writing to xlsm file')
+        app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' writing to xlsm file')
         for prod in prods:
             count += 1
             sheet['A' + str(count)] = prod
@@ -50,6 +50,7 @@ def search_price():
             sheet['E' + str(count)] = prods[prod][date]
 
         workbook.save('result.xlsx')
+        app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' sending email')
         smtp.send_email()
 
 
@@ -63,9 +64,7 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print(datetime.now().strftime(
-                "%Y-%m-%d %H:%M:%S") + 'search.csv save in path: ' + os.path.join(UPLOAD_FOLDER,
-                                                                                  filename))
+            app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' search.csv save in path: ' + os.path.join(UPLOAD_FOLDER, filename))
             file.save(os.path.join(UPLOAD_FOLDER,
                                    filename))
             return "OK"
@@ -116,6 +115,10 @@ if __name__ == '__main__':
     app.config.from_object(Config())
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
+    
+    app.debug = True
+    handler = logging.FileHandler('flask.log')
+    app.logger.addHandler(handler)
 
     scheduler = APScheduler()
     # it is also possible to enable the API directly
@@ -123,4 +126,4 @@ if __name__ == '__main__':
     scheduler.init_app(app)
     scheduler.start()
 
-    app.run(debug=True)
+    app.run()

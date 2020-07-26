@@ -1,6 +1,5 @@
 import smtplib
 import os
-from datetime import datetime
 from email.mime.multipart import MIMEMultipart  # email內容載體
 from email.mime.text import MIMEText  # 用於製作文字內文
 from email.mime.base import MIMEBase  # 用於承載附檔
@@ -8,8 +7,6 @@ from email import encoders  # 用於附檔編碼
 
 
 def send_email():
-    print(datetime.now().strftime(
-        "%Y-%m-%d %H:%M:%S") + ' sending email')
     # 設定要使用的Gmail帳戶資訊
     gmail_user = os.environ.get('GMAIL_USER')
     gmail_password = os.environ.get('GMAIL_PASSWORD')

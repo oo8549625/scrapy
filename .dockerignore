@@ -1,2 +1,4 @@
 __pycache__
 .gitignore
+flask.log
+docker-compose.yml
