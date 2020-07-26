@@ -30,7 +30,7 @@ def search_price():
                 if scrapy.search_prods(row[0], row[1]):
                     prods[row[0]]=scrapy.search_prods(row[0], row[1])
                     app.logger.info(datetime.now().strftime(
-                        "%Y-%m-%d %H:%M:%S") + 'prod: ' + row[0] + '=\t' + prods[row[0]])
+                        "%Y-%m-%d %H:%M:%S") + 'prod: ' + row[0] + ',\tprice: ' + prods[row[0]][price] + ',\tlowestPrice: ' +  prods[row[0]][lowestPrice])
 
         workbook=openpyxl.Workbook()
         sheet=workbook.active
