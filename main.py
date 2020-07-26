@@ -111,7 +111,7 @@ class Config(object):
             'args': '',
             'trigger': 'cron',
             'hour': '22',
-            'minute': '11',
+            'minute': '20',
         }
     ]
 
