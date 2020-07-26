@@ -18,6 +18,12 @@ $ heroku ps
 
 ## GCP app engine guide
 
-$ gcloud app regions list
+python3 -m venv env
+source env/bin/activate
 
-$ gcloud app create --project=pchome-scrapy --region=asia-east2
+cd YOUR_PROJECT
+pip install  -r requirements.txt
+
+
+gcloud app deploy app.yaml \
+    --project scrapy-pchome
