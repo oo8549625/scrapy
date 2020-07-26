@@ -16,7 +16,7 @@ ALLOWED_EXTENSIONS = set(['csv'])
 # os.path.dirname(__file__)
 app = Flask(__name__)
 logging.basicConfig(filename=os.path.join(
-    os.path.dirname(__file__), 'flask.log'), level=logging.INFO)
+     os.environ.get('LOG_DIR'), 'flask.log'), level=logging.INFO)
 
 
 def search_price():
@@ -113,7 +113,7 @@ class Config(object):
             'args': '',
             'trigger': 'cron',
             'hour': '22',
-            'minute': '26',
+            'minute': '28',
         }
     ]
 
