@@ -2,3 +2,4 @@ openpyxl
 flask
 gunicorn
 schedule
+requests

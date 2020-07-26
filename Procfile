@@ -1,2 +1,2 @@
-web: gunicorn -w 2 run:app  
+web: gunicorn run:app  
 worker: python3 sched.py
