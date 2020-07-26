@@ -1,4 +1,5 @@
 openpyxl
 flask
+gunicorn
 Flask-APScheduler
 requests
