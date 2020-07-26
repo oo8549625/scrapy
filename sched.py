@@ -45,8 +45,9 @@ def search_price():
 
 schedule.every().day.at("10:30").do(search_price)
 schedule.every().day.at("16:30").do(search_price)
-schedule.every(1).minutes.do(date_now)
+schedule.every().day.at("13:00").do(search_price)
+schedule.every(1).hour.do(date_now)
 
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(60)
