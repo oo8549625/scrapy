@@ -14,7 +14,8 @@ UPLOAD_FOLDER = os.path.dirname(__file__)
 ALLOWED_EXTENSIONS = set(['csv'])
 
 app = Flask(__name__)
-
+logging.basicConfig(filename=os.path.join(
+    os.path.join(os.environ.get('LOG_DIR'), 'flask.log'), level=logging.INFO)
 
 def search_price():
     with open('search.csv', newline='') as csvfile:
@@ -119,12 +120,6 @@ class Config(object):
 app.config.from_object(Config())
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
-
-app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") +
-                ' logs save in path: ' + os.path.join(os.environ.get('LOG_DIR'), 'flask.log'))
-handler = logging.FileHandler(filename=os.path.join(
-    os.environ.get('LOG_DIR'), 'flask.log'))
-app.logger.addHandler(handler)
 
 scheduler = APScheduler()
 # it is also possible to enable the API directly
