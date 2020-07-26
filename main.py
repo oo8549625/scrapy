@@ -22,6 +22,8 @@ def search_price():
         next(rows)
         prods = {}
         # 以迴圈輸出每一列
+        print(datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S") + ' searching prod price')
         for row in rows:
             if row[1]:
                 if scrapy.search_prods(row[0], row[1]):
@@ -36,6 +38,8 @@ def search_price():
         sheet['E1'] = '搜尋日期'
 
         count = 1
+        print(datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S") + ' writing to xlsm file')
         for prod in prods:
             count += 1
             sheet['A' + str(count)] = prod
@@ -97,8 +101,8 @@ class Config(object):
             'func': search_price,
             'args': '',
             'trigger': 'cron',
-            'hour': '16',
-            'minute': '46',
+            'hour': '19',
+            'minute': '10',
         }
     ]
 
