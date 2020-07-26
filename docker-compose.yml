@@ -9,8 +9,8 @@ services:
     container_name: scrapy
     environment:
       TZ: Asia/Taipei
-      GMAIL_USER: a0970366492@gmail.com
       LOG_DIR: /data/log
+      GMAIL_USER: a0970366492@gmail.com
       GMAIL_PASSWORD: 
     ports:
       - '5000:5000'
