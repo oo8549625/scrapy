@@ -14,7 +14,7 @@ UPLOAD_FOLDER = os.path.dirname(__file__)
 ALLOWED_EXTENSIONS = set(['csv'])
 
 app = Flask(__name__)
-logging.basicConfig(filename=os.path.join(os.environ.get('LOG_DIR'), 'flask.log'), level=logging.INFO))
+logging.basicConfig(filename=os.path.join(os.environ.get('LOG_DIR'), 'flask.log'), level=logging.INFO)
 
 def search_price():
     with open('search.csv', newline = '') as csvfile:
