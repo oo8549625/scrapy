@@ -1,11 +1,8 @@
 import requests
 import json
-import csv
 import re
 import time
 from datetime import datetime
-import openpyxl
-import smtp
 
 
 def search_prods(query, price):
@@ -21,51 +18,19 @@ def search_prods(query, price):
     for page in list(range(1, pages)):
         url = 'https://ecshweb.pchome.com.tw/search/v3.3/all/results?q={}&page={}&sort=sale/dc'.format(
             query, page)
+        # every time request after sleep time 2s
         time.sleep(2)
         resp = requests.get(url, headers=headers)
         data = resp.json()
         if data:
             for prod in data['prods']:
-                regex = query.split('-', 1)
+                regex = query.split('-')
                 validToken = re.search(query, prod['name'])
-                validToken1 = re.search(regex, prod['name'])
-                validToken2 = re.search(regex + '-', prod['name'])
+                validToken1 = re.search(regex[0], prod['name'])
+                validToken2 = re.search(regex[0] + '-', prod['name'])
                 if validToken:
                     if(int(price) > prod['price']):
                         return {'price': price, 'lowestPrice': prod['price'], 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
                 elif validToken1 and (not validToken2):
                     if(int(price) > prod['price']):
                         return {'price': price, 'lowestPrice': prod['price'], 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-
-
-with open('search.csv', newline='') as csvfile:
-    # 讀取 CSV 檔案內容
-    rows = csv.reader(csvfile)
-    next(rows)
-    prods = {}
-    # 以迴圈輸出每一列
-    for row in rows:
-        if row[1]:
-            if search_prods(row[0], row[1]):
-                prods[row[0]] = search_prods(row[0], row[1])
-
-    workbook = openpyxl.Workbook()
-    sheet = workbook.active
-    sheet['A1'] = '型號'
-    sheet['B1'] = '牌價'
-    sheet['C1'] = '最低價'
-    sheet['D1'] = 'URL'
-    sheet['E1'] = '搜尋日期'
-
-    count = 1
-    for prod in prods:
-        count += 1
-        sheet['A' + str(count)] = prod
-        sheet['B' + str(count)] = prods[prod][price]
-        sheet['C' + str(count)] = prods[prod][lowestPrice]
-        sheet['D' + str(count)
-              ] = 'https://ecshweb.pchome.com.tw/search/v3.3/?q={}'.format(prod)
-        sheet['E' + str(count)] = prods[prod][date]
-
-    workbook.save('result.xlsx')
-    smtp.send_email()

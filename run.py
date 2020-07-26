@@ -9,7 +9,6 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
 
-
 def allowed_file(filename):
     return 'search' in filename and '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
@@ -23,6 +22,7 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'],
                                    filename))
             return "OK"
+    # GET return
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -33,6 +33,6 @@ def upload_file():
     </form>
     '''
 
-
 if __name__ == '__main__':
     app.run(debug=True)
+
