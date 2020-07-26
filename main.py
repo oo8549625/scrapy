@@ -113,7 +113,7 @@ class Config(object):
             'args': '',
             'trigger': 'cron',
             'hour': '22',
-            'minute': '28',
+            'minute': '37',
         }
     ]
 
