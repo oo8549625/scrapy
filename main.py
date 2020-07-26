@@ -117,7 +117,7 @@ if __name__ == '__main__':
     app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
     
     app.debug = True
-    handler = logging.FileHandler('flask.log')
+    handler = logging.FileHandler(filename=os.path.join(os.environ.get('LOG_DIR'), 'flask.log'))
     app.logger.addHandler(handler)
 
     scheduler = APScheduler()
