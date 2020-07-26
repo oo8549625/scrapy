@@ -112,8 +112,8 @@ class Config(object):
             'func': search_price,
             'args': '',
             'trigger': 'cron',
-            'hour': '22',
-            'minute': '37',
+            'hour': '23',
+            'minute': '44',
         }
     ]
 
