@@ -34,7 +34,7 @@ def search_price():
                     prods[row[0]] = scrapy.search_prods(row[0], row[1])
                     prod = prods[row[0]]
                     app.logger.info(datetime.now().strftime(
-                        "%Y-%m-%d %H:%M:%S") + ' prod: ' + row[0] + ',\tprice: ' + str(prod['price']) + ',\tlowestPrice: ' + str(prod['lowestPrice']))
+                        "%Y-%m-%d %H:%M:%S") + ' prod: ' + row[0] + ', price: ' + str(prod['price']) + ', lowestPrice: ' + str(prod['lowestPrice']) + ', is_welfare: ' + str(is_welfare))
 
         workbook = openpyxl.Workbook()
         sheet = workbook.active
@@ -109,14 +109,14 @@ class Config(object):
             'hour': '16',
             'minute': '50',
         },
-        {
-            'id': 'job3',
-            'func': search_price,
-            'args': '',
-            'trigger': 'cron',
-            'hour': '23',
-            'minute': '34',
-        }
+        # {
+        #     'id': 'job3',
+        #     'func': search_price,
+        #     'args': '',
+        #     'trigger': 'cron',
+        #     'hour': '23',
+        #     'minute': '34',
+        # }
     ]
 
     SCHEDULER_API_ENABLED = True
