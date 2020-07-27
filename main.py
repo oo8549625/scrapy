@@ -16,7 +16,7 @@ ALLOWED_EXTENSIONS = set(['csv'])
 # os.path.dirname(__file__)
 app = Flask(__name__)
 logging.basicConfig(filename=os.path.join(
-     os.environ.get('LOG_DIR'), 'flask.log'), level=logging.INFO)
+    os.environ.get('LOG_DIR'), 'flask.log'), level=logging.INFO)
 
 
 def search_price():
@@ -97,7 +97,7 @@ class Config(object):
             'args': '',
             'trigger': 'cron',
             'hour': '10',
-            'minute': '30',
+            'minute': '50',
         },
         {
             'id': 'job2',
@@ -105,16 +105,16 @@ class Config(object):
             'args': '',
             'trigger': 'cron',
             'hour': '16',
-            'minute': '30',
+            'minute': '50',
         },
-        {
-            'id': 'job3',
-            'func': search_price,
-            'args': '',
-            'trigger': 'cron',
-            'hour': '23',
-            'minute': '44',
-        }
+        # {
+        #     'id': 'job3',
+        #     'func': search_price,
+        #     'args': '',
+        #     'trigger': 'cron',
+        #     'hour': '13',
+        #     'minute': '00',
+        # }
     ]
 
     SCHEDULER_API_ENABLED = True
