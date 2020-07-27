@@ -33,4 +33,4 @@ def search_prods(query, price):
                     if(int(price) > prod['price']):
                         if(re.search('福利', prod['name']) or re.search('福利', prod['describe'])):
                             is_welfare = True
-                        return {'price': price, 'lowestPrice': prod['price'], 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S", 'is_welfare': is_welfare)}
+                        return {'price': price, 'lowestPrice': prod['price'], 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'is_welfare': is_welfare}
