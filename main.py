@@ -55,6 +55,8 @@ def search_price():
             sheet['D' + str(count)
                   ] = 'https://ecshweb.pchome.com.tw/search/v3.3/?q={}'.format(prod)
             sheet['E' + str(count)] = prods[prod]['date']
+            if prods[prod]['is_welfare']:
+                sheet['F' + str(count)] = '福利品'
 
         workbook.save('result.xlsx')
         app.logger.info(datetime.now().strftime(
@@ -107,14 +109,14 @@ class Config(object):
             'hour': '16',
             'minute': '50',
         },
-        # {
-        #     'id': 'job3',
-        #     'func': search_price,
-        #     'args': '',
-        #     'trigger': 'cron',
-        #     'hour': '13',
-        #     'minute': '00',
-        # }
+        {
+            'id': 'job3',
+            'func': search_price,
+            'args': '',
+            'trigger': 'cron',
+            'hour': '23',
+            'minute': '30',
+        }
     ]
 
     SCHEDULER_API_ENABLED = True

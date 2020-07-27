@@ -24,13 +24,13 @@ def search_prods(query, price):
         data = resp.json()
         if data:
             for prod in data['prods']:
+                is_welfare = False
                 regex = query.split('-')
                 validToken = re.search(query, prod['name'])
                 validToken1 = re.search(regex[0], prod['name'])
                 validToken2 = re.search(regex[0] + '-', prod['name'])
-                if validToken:
+                if validToken or (validToken1 and (not validToken2)):
                     if(int(price) > prod['price']):
-                        return {'price': price, 'lowestPrice': prod['price'], 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-                elif validToken1 and (not validToken2):
-                    if(int(price) > prod['price']):
-                        return {'price': price, 'lowestPrice': prod['price'], 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                        if(re.search('福利', prod['name']) or re.search('福利', prod['describe'])):
+                            is_welfare = True
+                        return {'price': price, 'lowestPrice': prod['price'], 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S", 'is_welfare': is_welfare)}
