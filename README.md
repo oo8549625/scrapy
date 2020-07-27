@@ -10,4 +10,4 @@ $ docker-compose up -d --build --force-recreate
 
 ## smtp gmail 
 
-安全行問題
+安全問題
