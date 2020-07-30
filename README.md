@@ -5,7 +5,7 @@ $ pip3 install -r requirements.txt
 
 ## docker-compose
 
-$ docker-compose up -d --build --force-recreate
+docker-compose up -d --build --force-recreate
 
 
 ## smtp gmail 

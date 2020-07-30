@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 logging.basicConfig(filename=os.path.join(
     LOG_DIR, 'flask.log'), level=logging.INFO)
-app.config.from_object(Config())
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
 
@@ -124,6 +124,9 @@ class Config(object):
     ]
 
     SCHEDULER_API_ENABLED = True
+
+
+app.config.from_object(Config())
 
 scheduler = APScheduler()
 # it is also possible to enable the API directly
