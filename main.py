@@ -10,17 +10,21 @@ import openpyxl
 import csv
 import logging
 
-UPLOAD_FOLDER = os.path.dirname(__file__)
+UPLOAD_FOLDER = '/data/src'
 ALLOWED_EXTENSIONS = set(['csv'])
-# os.environ.get('LOG_DIR')
-# os.path.dirname(__file__)
+LOG_DIR = '/data/log'
+
 app = Flask(__name__)
+
 logging.basicConfig(filename=os.path.join(
-    os.environ.get('LOG_DIR'), 'flask.log'), level=logging.INFO)
+    LOG_DIR, 'flask.log'), level=logging.INFO)
+app.config.from_object(Config())
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
 
 
 def search_price():
-    with open('search.csv', newline='') as csvfile:
+    with open(os.path.join(SRC_DIR, 'search.csv'), newline='') as csvfile:
         # 讀取 CSV 檔案內容
         rows = csv.reader(csvfile)
         next(rows)
@@ -75,8 +79,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") +
-                            ' search.csv save in path: ' + os.path.join(UPLOAD_FOLDER, filename))
-            file.save(os.path.join(UPLOAD_FOLDER,
+                            ' search.csv save in path: ' + os.path.join(SRC_DIR, filename))
+            file.save(os.path.join(SRC_DIR,
                                    filename))
             return "OK"
     # GET return
@@ -120,11 +124,6 @@ class Config(object):
     ]
 
     SCHEDULER_API_ENABLED = True
-
-
-app.config.from_object(Config())
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
 
 scheduler = APScheduler()
 # it is also possible to enable the API directly
