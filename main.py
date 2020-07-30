@@ -24,7 +24,7 @@ app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB
 
 
 def search_price():
-    with open(os.path.join(SRC_DIR, 'search.csv'), newline='') as csvfile:
+    with open(os.path.join(UPLOAD_FOLDER, 'search.csv'), newline='') as csvfile:
         # 讀取 CSV 檔案內容
         rows = csv.reader(csvfile)
         next(rows)
@@ -79,8 +79,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             app.logger.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S") +
-                            ' search.csv save in path: ' + os.path.join(SRC_DIR, filename))
-            file.save(os.path.join(SRC_DIR,
+                            ' search.csv save in path: ' + os.path.join(UPLOAD_FOLDER, filename))
+            file.save(os.path.join(UPLOAD_FOLDER,
                                    filename))
             return "OK"
     # GET return
