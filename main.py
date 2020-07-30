@@ -38,7 +38,7 @@ def search_price():
                     prods[row[0]] = scrapy.search_prods(row[0], row[1])
                     prod = prods[row[0]]
                     app.logger.info(datetime.now().strftime(
-                        "%Y-%m-%d %H:%M:%S") + ' prod: ' + row[0] + ', price: ' + str(prod['price']) + ', lowestPrice: ' + str(prod['lowestPrice']) + ', is_welfare: ' + str(is_welfare))
+                        "%Y-%m-%d %H:%M:%S") + ' prod: ' + row[0] + ', price: ' + str(prod['price']) + ', lowestPrice: ' + str(prod['lowestPrice']) + ', is_welfare: ' + str(prod['is_welfare']))
 
         workbook = openpyxl.Workbook()
         sheet = workbook.active
