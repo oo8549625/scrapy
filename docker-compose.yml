@@ -5,7 +5,6 @@ services:
     build: .
     image: scrapy
     restart: always
-    network_mode: host
     container_name: scrapy
     environment:
       TZ: Asia/Taipei
